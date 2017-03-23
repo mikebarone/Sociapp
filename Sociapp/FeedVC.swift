@@ -23,11 +23,13 @@ class FeedVC: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    @IBAction func signOutPressed(_ sender: Any) {
+
+    @IBAction func signOutTapped(_ sender: Any) {
         let keychainResult = KeychainWrapper.standard.remove(key: KEY_UID)
         print("MIKE: \(keychainResult) ID removed from keychain")
         try! FIRAuth.auth()?.signOut()
         performSegue(withIdentifier: "SignInVC", sender: nil)
-        
     }
+    
+    
 }
