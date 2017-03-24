@@ -97,7 +97,7 @@ class SignInVC: UIViewController {
     }
     
     func completeSignIn(id: String, userData: Dictionary<String, String>) {
-        //DataService.ds.createFirbaseDBUser(uid: id, userData: userData)
+        DataService.ds.createFirbaseDBUser(uid: id, userData: userData)
         let keychainResult = KeychainWrapper.standard.set(id, forKey: KEY_UID)
         print("MIKE: Data saved to keychain \(keychainResult)")
         performSegue(withIdentifier: "FeedVC", sender: nil)

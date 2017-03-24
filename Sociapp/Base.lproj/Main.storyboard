@@ -166,7 +166,7 @@
                                                 </constraints>
                                                 <state key="normal" image="signout"/>
                                                 <connections>
-                                                    <action selector="signOutTapped:" destination="IZx-ht-bwc" eventType="touchUpInside" id="iw3-yI-22F"/>
+                                                    <action selector="signOutPressed:" destination="IZx-ht-bwc" eventType="touchUpInside" id="PC4-7Y-LA7"/>
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Feeds" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DUt-OY-2aG">
