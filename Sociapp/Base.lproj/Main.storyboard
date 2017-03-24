@@ -209,6 +209,9 @@
                                                     <constraint firstAttribute="width" constant="35" id="weA-3L-hzb"/>
                                                 </constraints>
                                                 <state key="normal" image="addimage"/>
+                                                <connections>
+                                                    <action selector="addImagePressed:" destination="IZx-ht-bwc" eventType="touchUpInside" id="h9z-Nh-GYb"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vM2-fj-Czq">
                                                 <rect key="frame" x="330" y="10" width="35" height="35"/>
@@ -217,6 +220,9 @@
                                                     <constraint firstAttribute="width" constant="35" id="zcK-NO-qPp"/>
                                                 </constraints>
                                                 <state key="normal" image="addpost"/>
+                                                <connections>
+                                                    <action selector="postPressed:" destination="IZx-ht-bwc" eventType="touchUpInside" id="R7H-t5-CEQ"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <edgeInsets key="layoutMargins" top="10" left="8" bottom="10" right="10"/>
@@ -293,6 +299,9 @@
                                                                                         <constraint firstAttribute="width" constant="30" id="pL2-M2-iuA"/>
                                                                                     </constraints>
                                                                                     <state key="normal" image="heartempty"/>
+                                                                                    <connections>
+                                                                                        <action selector="likePressed:" destination="IZx-ht-bwc" eventType="touchUpInside" id="KRt-S4-nlW"/>
+                                                                                    </connections>
                                                                                 </button>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iIM-9e-ZPs">
                                                                                     <rect key="frame" x="40" y="0.0" width="325" height="30"/>
@@ -358,6 +367,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="addImageButton" destination="b9t-QI-dsT" id="k70-oc-o65"/>
+                        <outlet property="postButton" destination="vM2-fj-Czq" id="Lvf-WC-83v"/>
                         <outlet property="tableView" destination="emq-Hu-8YJ" id="BaX-a3-Mfj"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="SignInVC" id="Yze-7l-Rmf"/>
                     </connections>
