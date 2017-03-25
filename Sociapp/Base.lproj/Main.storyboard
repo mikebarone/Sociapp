@@ -368,6 +368,7 @@
                     </view>
                     <connections>
                         <outlet property="addImageButton" destination="b9t-QI-dsT" id="k70-oc-o65"/>
+                        <outlet property="captionField" destination="KBr-A2-0nt" id="O8G-VQ-gwu"/>
                         <outlet property="postButton" destination="vM2-fj-Czq" id="Lvf-WC-83v"/>
                         <outlet property="tableView" destination="emq-Hu-8YJ" id="BaX-a3-Mfj"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="SignInVC" id="Yze-7l-Rmf"/>
