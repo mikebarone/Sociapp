@@ -154,7 +154,4 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         tableView.reloadData()
     }
     
-    @IBAction func likePressed(_ sender: Any) {
-        
-    }
 }
