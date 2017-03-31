@@ -20,6 +20,8 @@ class PostCell: UITableViewCell {
     
     var post: Post!
     var likesRef: FIRDatabaseReference!
+    var displayNameRef: FIRDatabaseReference!
+    var profileImageUrlRef: FIRDatabaseReference!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -32,6 +34,8 @@ class PostCell: UITableViewCell {
         self.likeNumber.text = "\(post.likes)"
         
         likesRef = DataService.ds.REF_USER_CURRENT.child("likes").child(post.postKey)
+        displayNameRef = DataService.ds.REF_USERS.child(post.userId).child("displayName")
+        profileImageUrlRef = DataService.ds.REF_USERS.child(post.userId).child("profileImageUrl")
         
         if img != nil {
             self.postImage.image = img
@@ -57,6 +61,35 @@ class PostCell: UITableViewCell {
                 self.likeButton.setImage(UIImage(named: "heartempty"), for: UIControlState.normal)
             } else {
                 self.likeButton.setImage(UIImage(named: "heartfilled"), for: UIControlState.normal)
+            }
+        })
+        
+        displayNameRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            if let displayName = snapshot.value as? String {
+                self.username.text = displayName
+            }
+        })
+        
+        profileImageUrlRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            if let profileImageUrl = snapshot.value as? String {
+                if let img = FeedVC.profileImageCache.object(forKey: profileImageUrl as NSString) {
+                    self.profileImage.image = img
+                } else {
+                    let ref = FIRStorage.storage().reference(forURL: profileImageUrl)
+                    ref.data(withMaxSize: 2 * 1024 * 1024, completion: { (data, error) in
+                        if error != nil {
+                            print("MIKE: Unable to download Profile Image from Firebase storage")
+                        } else {
+                            print("MIKE: Profile Image downloaded from Firebase storage")
+                            if let imgData = data {
+                                if let img = UIImage(data: imgData) {
+                                    self.profileImage.image = img
+                                    FeedVC.profileImageCache.setObject(img, forKey: profileImageUrl as NSString)
+                                }
+                            }
+                        }
+                    })
+                }
             }
         })
         

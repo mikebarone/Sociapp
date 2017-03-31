@@ -20,6 +20,7 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     var posts = [Post]()
     var imagePicker: UIImagePickerController!
     static var imageCache: NSCache<NSString, UIImage> = NSCache()
+    static var profileImageCache: NSCache<NSString, UIImage> = NSCache()
     var imageSelected = false
     
     override func viewDidLoad() {
@@ -96,13 +97,6 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         // Dispose of any resources that can be recreated.
     }
 
-    @IBAction func signOutPressed(_ sender: Any) {
-        let keychainResult = KeychainWrapper.standard.removeObject(forKey: KEY_UID)
-        print("MIKE: \(keychainResult) ID removed from keychain")
-        try! FIRAuth.auth()?.signOut()
-        performSegue(withIdentifier: "SignInVC", sender: nil)
-    }
-
     @IBAction func addImagePressed(_ sender: Any) {
         present(imagePicker, animated: true, completion: nil)
     }
@@ -138,20 +132,34 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     }
     
     func postToFirebase(imgUrl: String) {
-        let post: Dictionary<String, AnyObject> = [
-            "caption": captionField.text! as AnyObject,
-            "imageUrl": imgUrl as AnyObject,
-            "likes": 0 as AnyObject
-        ]
         
-        let firebasePost = DataService.ds.REF_POSTS.childByAutoId()
-        firebasePost.setValue(post)
-        
-        captionField.text = ""
-        imageSelected = false
-        addImageButton.setImage(UIImage(named: "addimage"), for: UIControlState.normal)
-        
-        tableView.reloadData()
+        if let userUID = KeychainWrapper.standard.string(forKey: KEY_UID) {
+            let post: Dictionary<String, AnyObject> = [
+                "caption": captionField.text! as AnyObject,
+                "imageUrl": imgUrl as AnyObject,
+                "likes": 0 as AnyObject,
+                "userId": userUID as AnyObject
+            ]
+            
+            let firebasePost = DataService.ds.REF_POSTS.childByAutoId()
+            firebasePost.setValue(post)
+            
+            var postsRef: FIRDatabaseReference!
+            postsRef = DataService.ds.REF_USER_CURRENT.child("posts").child(firebasePost.key)
+            postsRef.setValue(true)
+            
+            captionField.text = ""
+            imageSelected = false
+            addImageButton.setImage(UIImage(named: "addimage"), for: UIControlState.normal)
+            
+            tableView.reloadData()
+        }
     }
     
+    @IBAction func logOutPressed(_ sender: Any) {
+        let keychainResult = KeychainWrapper.standard.removeObject(forKey: KEY_UID)
+        print("MIKE: \(keychainResult) ID removed from keychain")
+        try! FIRAuth.auth()?.signOut()
+        performSegue(withIdentifier: "SignInVC", sender: nil)
+    }
 }
