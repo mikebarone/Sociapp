@@ -25,6 +25,8 @@ class UserVC: UIViewController, UINavigationControllerDelegate, UIPickerViewData
     
     static var imageCache: NSCache<NSString, UIImage> = NSCache()
     
+    var currentProfileImageUrl: String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -75,6 +77,9 @@ class UserVC: UIViewController, UINavigationControllerDelegate, UIPickerViewData
                 }
                 
                 if let profileImageUrl = userDict["profileImageUrl"] as? String, profileImageUrl != "" {
+                    
+                    self.currentProfileImageUrl = profileImageUrl
+                    
                     if let img = UserVC.imageCache.object(forKey: profileImageUrl as NSString) {
                         self.profileImage.image = img
                     } else {
@@ -163,6 +168,19 @@ class UserVC: UIViewController, UINavigationControllerDelegate, UIPickerViewData
                     if let url = downloadURL {
                         let userData = ["displayName": displayName, "status": self.statusText.text ?? "", "profileImageUrl": url, "gender": self.genders[self.genderPicker.selectedRow(inComponent: 0)].rawValue]
                         self.sendToFirebase(imgUrl: url,userData: userData)
+                    }
+                    
+                    let ref = FIRStorage.storage().reference(forURL: self.currentProfileImageUrl)
+                    
+                    // Delete the file
+                    ref.delete { error in
+                        if let error = error {
+                            // Uh-oh, an error occurred!
+                            print("Unable to delete the old profile image from firabase \(error)")
+                        } else {
+                            // File deleted successfully
+                            print("Old profile image deleted from firabase")
+                        }
                     }
                 }
             }
