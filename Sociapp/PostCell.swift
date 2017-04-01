@@ -17,6 +17,7 @@ class PostCell: UITableViewCell {
     @IBOutlet weak var postCaption: UITextField!
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var likeNumber: UILabel!
+    @IBOutlet weak var deleteEditPostButton: UIButton!
     
     var post: Post!
     var likesRef: FIRDatabaseReference!
@@ -108,5 +109,4 @@ class PostCell: UITableViewCell {
             }
         })
     }
-    
 }

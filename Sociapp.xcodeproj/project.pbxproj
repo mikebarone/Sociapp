@@ -15,6 +15,11 @@
 		8E540DFA1E836A8900541E2B /* FeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E540DF91E836A8900541E2B /* FeedVC.swift */; };
 		8E540DFC1E84A80F00541E2B /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E540DFB1E84A80F00541E2B /* CircleView.swift */; };
 		8E89A72E1E84B9A50030C41B /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E89A72D1E84B9A50030C41B /* PostCell.swift */; };
+		8ED688B61E8F420E00957D97 /* SlideInPresentationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED688B31E8F420E00957D97 /* SlideInPresentationManager.swift */; };
+		8ED688B71E8F420E00957D97 /* SlideInPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED688B41E8F420E00957D97 /* SlideInPresentationController.swift */; };
+		8ED688B81E8F420E00957D97 /* SlideInPresentationAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED688B51E8F420E00957D97 /* SlideInPresentationAnimator.swift */; };
+		8ED688BA1E8F432D00957D97 /* EditPostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED688B91E8F432D00957D97 /* EditPostVC.swift */; };
+		8ED688BC1E8F4DA200957D97 /* RoundCornerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED688BB1E8F4DA200957D97 /* RoundCornerButton.swift */; };
 		8ED92E771E8185F800760E24 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED92E761E8185F800760E24 /* AppDelegate.swift */; };
 		8ED92E791E8185F800760E24 /* SignInVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED92E781E8185F800760E24 /* SignInVC.swift */; };
 		8ED92E7C1E8185F800760E24 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8ED92E7A1E8185F800760E24 /* Main.storyboard */; };
@@ -37,6 +42,11 @@
 		8E540DF91E836A8900541E2B /* FeedVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedVC.swift; sourceTree = "<group>"; };
 		8E540DFB1E84A80F00541E2B /* CircleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleView.swift; sourceTree = "<group>"; };
 		8E89A72D1E84B9A50030C41B /* PostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
+		8ED688B31E8F420E00957D97 /* SlideInPresentationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideInPresentationManager.swift; sourceTree = "<group>"; };
+		8ED688B41E8F420E00957D97 /* SlideInPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideInPresentationController.swift; sourceTree = "<group>"; };
+		8ED688B51E8F420E00957D97 /* SlideInPresentationAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideInPresentationAnimator.swift; sourceTree = "<group>"; };
+		8ED688B91E8F432D00957D97 /* EditPostVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditPostVC.swift; sourceTree = "<group>"; };
+		8ED688BB1E8F4DA200957D97 /* RoundCornerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundCornerButton.swift; sourceTree = "<group>"; };
 		8ED92E731E8185F800760E24 /* Sociapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sociapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8ED92E761E8185F800760E24 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8ED92E781E8185F800760E24 /* SignInVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInVC.swift; sourceTree = "<group>"; };
@@ -74,6 +84,16 @@
 			name = Services;
 			sourceTree = "<group>";
 		};
+		8ED688B21E8F41F000957D97 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				8ED688B31E8F420E00957D97 /* SlideInPresentationManager.swift */,
+				8ED688B41E8F420E00957D97 /* SlideInPresentationController.swift */,
+				8ED688B51E8F420E00957D97 /* SlideInPresentationAnimator.swift */,
+			);
+			name = Presentation;
+			sourceTree = "<group>";
+		};
 		8ED92E6A1E8185F800760E24 = {
 			isa = PBXGroup;
 			children = (
@@ -95,6 +115,7 @@
 		8ED92E751E8185F800760E24 /* Sociapp */ = {
 			isa = PBXGroup;
 			children = (
+				8ED688B21E8F41F000957D97 /* Presentation */,
 				8E5050D51E857FDA00B6258A /* Services */,
 				8ED92E8F1E82D08500760E24 /* Utils */,
 				8ED92E8C1E81899F00760E24 /* Controller */,
@@ -128,6 +149,7 @@
 				8ED92E941E82D84E00760E24 /* FancyField.swift */,
 				8ED92E961E82DCBE00760E24 /* FancyButton.swift */,
 				8E89A72D1E84B9A50030C41B /* PostCell.swift */,
+				8ED688BB1E8F4DA200957D97 /* RoundCornerButton.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -138,6 +160,7 @@
 				8ED92E781E8185F800760E24 /* SignInVC.swift */,
 				8E540DF91E836A8900541E2B /* FeedVC.swift */,
 				8E2EF8141E86E9AB008B535B /* UserVC.swift */,
+				8ED688B91E8F432D00957D97 /* EditPostVC.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -292,16 +315,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8ED688BA1E8F432D00957D97 /* EditPostVC.swift in Sources */,
+				8ED688BC1E8F4DA200957D97 /* RoundCornerButton.swift in Sources */,
 				8E2EF8131E86B764008B535B /* User.swift in Sources */,
 				8E540DFC1E84A80F00541E2B /* CircleView.swift in Sources */,
 				8ED92E951E82D84E00760E24 /* FancyField.swift in Sources */,
 				8ED92E791E8185F800760E24 /* SignInVC.swift in Sources */,
+				8ED688B81E8F420E00957D97 /* SlideInPresentationAnimator.swift in Sources */,
 				8E5050D91E85B6FD00B6258A /* Post.swift in Sources */,
 				8ED92E931E82D35900760E24 /* RoundButton.swift in Sources */,
+				8ED688B71E8F420E00957D97 /* SlideInPresentationController.swift in Sources */,
 				8ED92E971E82DCBE00760E24 /* FancyButton.swift in Sources */,
 				8E2EF8151E86E9AB008B535B /* UserVC.swift in Sources */,
 				8E5050D71E857FF600B6258A /* DataService.swift in Sources */,
 				8E540DFA1E836A8900541E2B /* FeedVC.swift in Sources */,
+				8ED688B61E8F420E00957D97 /* SlideInPresentationManager.swift in Sources */,
 				8ED92E771E8185F800760E24 /* AppDelegate.swift in Sources */,
 				8ED92E8E1E82CFF100760E24 /* FancyView.swift in Sources */,
 				8ED92E911E82D09600760E24 /* Constants.swift in Sources */,
