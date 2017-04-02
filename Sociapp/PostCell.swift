@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import SwiftKeychainWrapper
 
 class PostCell: UITableViewCell {
     
@@ -33,6 +34,14 @@ class PostCell: UITableViewCell {
         self.post = post
         self.postCaption.text = post.caption
         self.likeNumber.text = "\(post.likes)"
+        
+        if let userUID = KeychainWrapper.standard.string(forKey: KEY_UID) {
+            if userUID != post.userId {
+                deleteEditPostButton.isHidden = true
+            } else {
+                deleteEditPostButton.isHidden = false
+            }
+        }
         
         likesRef = DataService.ds.REF_USER_CURRENT.child("likes").child(post.postKey)
         displayNameRef = DataService.ds.REF_USERS.child(post.userId).child("displayName")

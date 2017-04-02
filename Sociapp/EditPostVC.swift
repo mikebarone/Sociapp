@@ -33,13 +33,22 @@ class EditPostVC: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         if self.isBeingDismissed {
-            //if let pokeSel = selectedPokemon {
-            //    self.delegate?.acceptData(data: pokeSel.pokedexId as AnyObject!)
-            //}
+            self.delegate?.acceptData(data: data as AnyObject!)
         }
     }
     
+    @IBAction func deletePressed(_ sender: Any) {
+        data = "delete" as AnyObject
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func editPressed(_ sender: Any) {
+        data = "edit" as AnyObject
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     @IBAction func cancelPressed(_ sender: Any) {
+        data = "cancel" as AnyObject
         self.dismiss(animated: true, completion: nil)
     }
 }

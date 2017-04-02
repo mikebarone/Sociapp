@@ -24,6 +24,7 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     static var imageCache: NSCache<NSString, UIImage> = NSCache()
     static var profileImageCache: NSCache<NSString, UIImage> = NSCache()
     var imageSelected = false
+    var postSelected: Post!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +37,7 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         imagePicker = UIImagePickerController()
         imagePicker.allowsEditing = true
         imagePicker.delegate = self
+        
         
         DataService.ds.REF_POSTS.observe(.value, with: { (snapshot) in
             
@@ -57,8 +59,69 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     }
     
     func acceptData(data: AnyObject!) {
-        //let loc = CLLocation(latitude: mapView.centerCoordinate.latitude, longitude: mapView.centerCoordinate.longitude)
-        //createSighting(forLocation: loc, withPokemon: Int(data! as! NSNumber))
+        
+        if let action = data as? String {
+          
+            switch action {
+            case "delete":
+                if let post = postSelected {
+                    
+                    var refUsers: UInt = 0
+                    refUsers = DataService.ds.REF_USERS.observe(.value, with: {(snapshot) in
+                        if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot] {
+                            for snap in snapshot {
+                                print("SNAP DELETE: \(snap)")
+                                DataService.ds.REF_USERS.child(snap.key).child("likes").child(post.postKey).removeValue(completionBlock: { (error, refer) in
+                                    if error != nil {
+                                        print(error ?? "Error")
+                                    } else {
+                                        print("Like for post \(post.postKey) deleted Correctly from User \(snap.key)")
+                                    }
+                                })
+                                
+                                DataService.ds.REF_USERS.child(snap.key).child("posts").child(post.postKey).removeValue(completionBlock: { (error, refer) in
+                                    if error != nil {
+                                        print(error ?? "Error")
+                                    } else {
+                                        print("Post for post \(post.postKey) deleted Correctly from User \(snap.key)")
+                                    }
+                                })
+                            }
+                            DataService.ds.REF_USERS.removeObserver(withHandle: refUsers)
+                        }
+                    })
+                    
+                    let refImage = FIRStorage.storage().reference(forURL: post.imageUrl)
+                    
+                    refImage.delete { error in
+                        if let error = error {
+                            print("Unable to delete  image from firabase \(error)")
+                        } else {
+                            print("Post Image deleted Correctly")
+                        }
+                    }
+                    
+                    DataService.ds.REF_POSTS.child(post.postKey).removeValue(completionBlock: { (error, refer) in
+                        if error != nil {
+                            print(error ?? "Error")
+                        } else {
+                            print(refer)
+                            print("Post Removed Correctly")
+                        }
+                    })
+                    
+                    tableView.reloadData()
+                }
+                break
+                
+            case "edit":
+                break
+                
+            default:
+                break
+            }
+        }
+        
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -75,6 +138,7 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell") as? PostCell {
             
+            cell.deleteEditPostButton.tag = indexPath.row
             cell.deleteEditPostButton.addTarget(self, action: #selector(FeedVC.goToEditPostVC), for: .touchUpInside)
             
             if let img = FeedVC.imageCache.object(forKey: post.imageUrl as NSString) {
@@ -86,6 +150,10 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         } else {
             return PostCell()
         }
+        
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
     }
     
@@ -172,7 +240,8 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         performSegue(withIdentifier: "SignInVC", sender: nil)
     }
     
-    func goToEditPostVC() {
+    func goToEditPostVC(sender:UIButton) {
+        postSelected = posts[sender.tag]
         performSegue(withIdentifier: "EditPostVC", sender: nil)
     }
     

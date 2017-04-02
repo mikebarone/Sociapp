@@ -158,12 +158,18 @@
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="18"/>
                                 <state key="normal" title="Delete Post"/>
+                                <connections>
+                                    <action selector="deletePressed:" destination="MIS-Xd-X4B" eventType="touchUpInside" id="RqM-x6-cdP"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tqW-GA-Hme" customClass="RoundCornerButton" customModule="Sociapp" customModuleProvider="target">
                                 <rect key="frame" x="20" y="67" width="374" height="37"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="18"/>
                                 <state key="normal" title="Edit Post"/>
+                                <connections>
+                                    <action selector="editPressed:" destination="MIS-Xd-X4B" eventType="touchUpInside" id="QbY-hA-SZK"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ohs-lc-H70" customClass="RoundCornerButton" customModule="Sociapp" customModuleProvider="target">
                                 <rect key="frame" x="20" y="139" width="374" height="37"/>
