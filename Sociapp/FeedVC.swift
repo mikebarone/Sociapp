@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import SwiftKeychainWrapper
 
-class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, EditPostVCDelegate {
+class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, EditPostVCDelegate, ChangePostVCDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var addImageButton: UIButton!
@@ -34,6 +34,9 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         tableView.delegate = self
         tableView.dataSource = self
         
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 320
+        
         imagePicker = UIImagePickerController()
         imagePicker.allowsEditing = true
         imagePicker.delegate = self
@@ -56,6 +59,15 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
             self.tableView.reloadData()
         
         })
+    }
+    
+    func postData(data: AnyObject!) {
+        if let action = data as? String {
+            print("NEW CAPTION: \(action)")
+            if let post = postSelected, action != "" {
+                DataService.ds.REF_POSTS.child(post.postKey).child("caption").setValue(action)
+            }
+        }
     }
     
     func acceptData(data: AnyObject!) {
@@ -115,6 +127,7 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
                 break
                 
             case "edit":
+                performSegue(withIdentifier: "ChangePostVC", sender: nil)
                 break
                 
             default:
@@ -245,8 +258,21 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         performSegue(withIdentifier: "EditPostVC", sender: nil)
     }
     
+    func goToChangePostVC(sender:UIButton) {
+        postSelected = posts[sender.tag]
+        performSegue(withIdentifier: "ChangePostVC", sender: nil)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let controller = segue.destination as? EditPostVC {
+            slideInTransitioningDelegate.direction = .bottom
+            controller.transitioningDelegate = slideInTransitioningDelegate
+            controller.modalPresentationStyle = .custom
+            controller.delegate = self
+        } else if let controller = segue.destination as? ChangePostVC {
+            if let post = postSelected {
+                controller.data = post.caption as AnyObject
+            }
             slideInTransitioningDelegate.direction = .bottom
             controller.transitioningDelegate = slideInTransitioningDelegate
             controller.modalPresentationStyle = .custom

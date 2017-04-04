@@ -9,16 +9,20 @@
 import UIKit
 import Firebase
 import SwiftKeychainWrapper
+import AVFoundation
 
 class PostCell: UITableViewCell {
     
     @IBOutlet weak var profileImage: CircleView!
     @IBOutlet weak var username: UILabel!
     @IBOutlet weak var postImage: UIImageView!
-    @IBOutlet weak var postCaption: UITextField!
+    @IBOutlet weak var postCaption: UILabel!
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var likeNumber: UILabel!
     @IBOutlet weak var deleteEditPostButton: UIButton!
+    @IBOutlet weak var commentsTextView: UITextView!
+    @IBOutlet weak var postImageHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var postImageWidthConstraint: NSLayoutConstraint!
     
     var post: Post!
     var likesRef: FIRDatabaseReference!
@@ -28,6 +32,17 @@ class PostCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
+    }
+    
+    public func adjustPostImageSize() {
+        if postImage.frame.size.width < (postImage.image?.size.width)! {
+                       postImageHeightConstraint.constant = postImage.frame.size.width / (postImage.image?.size.width)! * (postImage.image?.size.height)!
+        }
+        
+        if postImage.frame.size.height < (postImage.image?.size.height)! {
+            postImageWidthConstraint.constant = postImage.frame.size.height / (postImage.image?.size.height)! * (postImage.image?.size.height)!
+        }
     }
     
     func configureCell(post: Post, img: UIImage? = nil){
@@ -49,6 +64,7 @@ class PostCell: UITableViewCell {
         
         if img != nil {
             self.postImage.image = img
+            adjustPostImageSize()
         } else {
             let ref = FIRStorage.storage().reference(forURL: post.imageUrl)
             ref.data(withMaxSize: 2 * 1024 * 1024, completion: { (data, error) in
@@ -59,12 +75,14 @@ class PostCell: UITableViewCell {
                     if let imgData = data {
                         if let img = UIImage(data: imgData) {
                             self.postImage.image = img
+                            self.adjustPostImageSize()
                             FeedVC.imageCache.setObject(img, forKey: post.imageUrl as NSString)
                         }
                     }
                 }
             })
         }
+        
         
         likesRef.observeSingleEvent(of: .value, with: { (snapshot) in
             if let _ = snapshot.value as? NSNull {
