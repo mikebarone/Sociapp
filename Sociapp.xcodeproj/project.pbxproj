@@ -17,6 +17,7 @@
 		8E89A72E1E84B9A50030C41B /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E89A72D1E84B9A50030C41B /* PostCell.swift */; };
 		8ED576B41E92F24C008252C8 /* ChangePostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED576B31E92F24C008252C8 /* ChangePostVC.swift */; };
 		8ED576BA1E93E369008252C8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8ED576B91E93E369008252C8 /* Assets.xcassets */; };
+		8ED576BC1E9454EA008252C8 /* AddCommentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED576BB1E9454EA008252C8 /* AddCommentVC.swift */; };
 		8ED688B61E8F420E00957D97 /* SlideInPresentationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED688B31E8F420E00957D97 /* SlideInPresentationManager.swift */; };
 		8ED688B71E8F420E00957D97 /* SlideInPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED688B41E8F420E00957D97 /* SlideInPresentationController.swift */; };
 		8ED688B81E8F420E00957D97 /* SlideInPresentationAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED688B51E8F420E00957D97 /* SlideInPresentationAnimator.swift */; };
@@ -45,6 +46,7 @@
 		8E89A72D1E84B9A50030C41B /* PostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
 		8ED576B31E92F24C008252C8 /* ChangePostVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePostVC.swift; sourceTree = "<group>"; };
 		8ED576B91E93E369008252C8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8ED576BB1E9454EA008252C8 /* AddCommentVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCommentVC.swift; sourceTree = "<group>"; };
 		8ED688B31E8F420E00957D97 /* SlideInPresentationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideInPresentationManager.swift; sourceTree = "<group>"; };
 		8ED688B41E8F420E00957D97 /* SlideInPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideInPresentationController.swift; sourceTree = "<group>"; };
 		8ED688B51E8F420E00957D97 /* SlideInPresentationAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideInPresentationAnimator.swift; sourceTree = "<group>"; };
@@ -164,6 +166,7 @@
 				8E2EF8141E86E9AB008B535B /* UserVC.swift */,
 				8ED688B91E8F432D00957D97 /* EditPostVC.swift */,
 				8ED576B31E92F24C008252C8 /* ChangePostVC.swift */,
+				8ED576BB1E9454EA008252C8 /* AddCommentVC.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -324,6 +327,7 @@
 				8E2EF8131E86B764008B535B /* User.swift in Sources */,
 				8E540DFC1E84A80F00541E2B /* CircleView.swift in Sources */,
 				8ED92E951E82D84E00760E24 /* FancyField.swift in Sources */,
+				8ED576BC1E9454EA008252C8 /* AddCommentVC.swift in Sources */,
 				8ED92E791E8185F800760E24 /* SignInVC.swift in Sources */,
 				8ED688B81E8F420E00957D97 /* SlideInPresentationAnimator.swift in Sources */,
 				8E5050D91E85B6FD00B6258A /* Post.swift in Sources */,

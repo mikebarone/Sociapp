@@ -16,6 +16,9 @@ class Post {
     private var _userId: String!
     private var _postKey: String!
     private var _postRef: FIRDatabaseReference!
+    private var _comments: Dictionary<String, AnyObject>!
+    
+    var commentsExpanded: Bool = false
     
     var caption: String {
         return _caption
@@ -36,6 +39,14 @@ class Post {
     var postKey: String {
         return _postKey
     }
+    
+    var comments: Dictionary<String, AnyObject> {
+        if _comments == nil {
+            return Dictionary()
+        }
+        return _comments
+    }
+    
     
     init(caption: String, imageUrl: String, likes: Int, userId: String) {
         self._caption = caption
@@ -61,6 +72,10 @@ class Post {
         
         if let userId = postData["userId"] as? String {
             self._userId = userId
+        }
+        
+        if let comments = postData["comments"] as? Dictionary<String, AnyObject> {
+            self._comments = comments
         }
         
         _postRef = DataService.ds.REF_POSTS.child(_postKey)

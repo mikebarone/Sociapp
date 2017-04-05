@@ -23,11 +23,17 @@ class PostCell: UITableViewCell {
     @IBOutlet weak var commentsTextView: UITextView!
     @IBOutlet weak var postImageHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var postImageWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var commentButton: UIButton!
+
     
     var post: Post!
     var likesRef: FIRDatabaseReference!
     var displayNameRef: FIRDatabaseReference!
     var profileImageUrlRef: FIRDatabaseReference!
+    
+    var showComments: NSMutableAttributedString = NSMutableAttributedString(string:"Show Comments...")
+    var allComments: NSMutableAttributedString = NSMutableAttributedString(string:"No comments yet")
+    var commentsExpanded: Bool = false
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -45,10 +51,37 @@ class PostCell: UITableViewCell {
         }
     }
     
+
     func configureCell(post: Post, img: UIImage? = nil){
         self.post = post
         self.postCaption.text = post.caption
         self.likeNumber.text = "\(post.likes)"
+        
+        let boldAttributes = [ NSFontAttributeName: UIFont(name: "Avenir Next", size: 15.0)!, NSForegroundColorAttributeName: UIColor.black ]
+        let normalAttributes = [ NSFontAttributeName: UIFont(name: "Avenir Next", size: 15.0)!, NSForegroundColorAttributeName: UIColor.gray ]
+        
+        if post.comments.count > 0 {
+            allComments = NSMutableAttributedString(string:"", attributes:normalAttributes)
+        }
+        
+        for comment in post.comments {
+            
+            let commentUserRef = DataService.ds.REF_USERS.child(comment.value["userId"] as! String).child("displayName")
+            commentUserRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                if let displayName = snapshot.value as? String {
+                    
+                    let currentComment = comment.value["comment"] as! String
+                    
+                    let attributedString = NSMutableAttributedString(string:"\(currentComment)\n", attributes:normalAttributes)
+                    let boldString = NSMutableAttributedString(string: "\(displayName) ", attributes:boldAttributes)
+                    boldString.append(attributedString)
+                    
+                    self.allComments.append(boldString)
+                }
+            })
+            
+        }
+        print(allComments)
         
         if let userUID = KeychainWrapper.standard.string(forKey: KEY_UID) {
             if userUID != post.userId {
@@ -123,6 +156,14 @@ class PostCell: UITableViewCell {
         
     }
 
+    @IBAction func commentPressed(_ sender: Any) {
+        
+    }
+    
+    func showCommentsPressed(_ sender: UITapGestureRecognizer) {
+        
+    }
+    
     @IBAction func likePressed(_ sender: Any) {
         likesRef.observeSingleEvent(of: .value, with: { (snapshot) in
             if let _ = snapshot.value as? NSNull {

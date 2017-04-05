@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import SwiftKeychainWrapper
 
-class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, EditPostVCDelegate, ChangePostVCDelegate {
+class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, EditPostVCDelegate, ChangePostVCDelegate, AddCommentVCDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var addImageButton: UIButton!
@@ -63,9 +63,24 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     
     func postData(data: AnyObject!) {
         if let action = data as? String {
-            print("NEW CAPTION: \(action)")
             if let post = postSelected, action != "" {
                 DataService.ds.REF_POSTS.child(post.postKey).child("caption").setValue(action)
+            }
+        }
+    }
+    
+    func commentData(data: AnyObject!) {
+        if let action = data as? String {
+            if let post = postSelected, action != "" {
+                if let userUID = KeychainWrapper.standard.string(forKey: KEY_UID) {
+                    let comment: Dictionary<String, AnyObject> = [
+                        "comment": action as AnyObject,
+                        "userId": userUID as AnyObject
+                    ]
+                    
+                    let firebaseComment = DataService.ds.REF_POSTS.child(post.postKey).child("comments").childByAutoId()
+                    firebaseComment.setValue(comment)
+                }
             }
         }
     }
@@ -154,6 +169,14 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
             cell.deleteEditPostButton.tag = indexPath.row
             cell.deleteEditPostButton.addTarget(self, action: #selector(FeedVC.goToEditPostVC), for: .touchUpInside)
             
+            cell.commentButton.tag = indexPath.row
+            cell.commentButton.addTarget(self, action: #selector(FeedVC.goToAddCommentVC), for: .touchUpInside)
+            
+            cell.commentsTextView.tag = indexPath.row
+            let tap = UITapGestureRecognizer(target: self, action: #selector(self.showCommentsPressed(_:)))
+            cell.commentsTextView.addGestureRecognizer(tap)
+            cell.commentsTextView.isUserInteractionEnabled = true
+            
             if let img = FeedVC.imageCache.object(forKey: post.imageUrl as NSString) {
                 cell.configureCell(post: post, img: img)
             } else {
@@ -164,6 +187,24 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
             return PostCell()
         }
         
+    }
+    
+    func showCommentsPressed(_ sender: UITapGestureRecognizer) {
+        if let row = sender.view?.tag {
+            postSelected = posts[row]
+            
+            let point: CGPoint = sender.view!.convert(CGPoint(), to: tableView)
+            let indexPath = tableView.indexPathForRow(at: point)
+            let cell = tableView.cellForRow(at: indexPath!) as! PostCell!
+            cell?.commentsExpanded = !(cell?.commentsExpanded)!
+            
+            cell?.commentsTextView.attributedText = (cell?.commentsExpanded)! ? cell?.allComments : cell?.showComments
+            
+            tableView.beginUpdates()
+            tableView.endUpdates()
+            
+            
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -263,6 +304,11 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         performSegue(withIdentifier: "ChangePostVC", sender: nil)
     }
     
+    func goToAddCommentVC(sender:UIButton) {
+        postSelected = posts[sender.tag]
+        performSegue(withIdentifier: "AddCommentVC", sender: nil)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let controller = segue.destination as? EditPostVC {
             slideInTransitioningDelegate.direction = .bottom
@@ -272,6 +318,14 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         } else if let controller = segue.destination as? ChangePostVC {
             if let post = postSelected {
                 controller.data = post.caption as AnyObject
+            }
+            slideInTransitioningDelegate.direction = .bottom
+            controller.transitioningDelegate = slideInTransitioningDelegate
+            controller.modalPresentationStyle = .custom
+            controller.delegate = self
+        } else if let controller = segue.destination as? AddCommentVC {
+            if let post = postSelected {
+                controller.data = "" as AnyObject
             }
             slideInTransitioningDelegate.direction = .bottom
             controller.transitioningDelegate = slideInTransitioningDelegate
