@@ -170,16 +170,23 @@ class UserVC: UIViewController, UINavigationControllerDelegate, UIPickerViewData
                         self.sendToFirebase(imgUrl: url,userData: userData)
                     }
                     
-                    let ref = FIRStorage.storage().reference(forURL: self.currentProfileImageUrl)
+                   
+                    let ref: FIRStorageReference!
                     
-                    // Delete the file
-                    ref.delete { error in
-                        if let error = error {
-                            // Uh-oh, an error occurred!
-                            print("Unable to delete the old profile image from firabase \(error)")
-                        } else {
-                            // File deleted successfully
-                            print("Old profile image deleted from firabase")
+                    if self.currentProfileImageUrl != "" {
+                        ref = FIRStorage.storage().reference(forURL: self.currentProfileImageUrl)
+                        
+                        if ref != nil {
+                            // Delete the file
+                            ref.delete { error in
+                                if let error = error {
+                                    // Uh-oh, an error occurred!
+                                    print("Unable to delete the old profile image from firabase \(error)")
+                                } else {
+                                    // File deleted successfully
+                                    print("Old profile image deleted from firabase")
+                                }
+                            }
                         }
                     }
                 }
