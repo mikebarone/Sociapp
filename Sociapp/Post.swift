@@ -41,9 +41,6 @@ class Post {
     }
     
     var comments: Dictionary<String, AnyObject> {
-        if _comments == nil {
-            return Dictionary()
-        }
         return _comments
     }
     
@@ -76,6 +73,8 @@ class Post {
         
         if let comments = postData["comments"] as? Dictionary<String, AnyObject> {
             self._comments = comments
+        } else {
+            self._comments = Dictionary<String, AnyObject>()
         }
         
         _postRef = DataService.ds.REF_POSTS.child(_postKey)

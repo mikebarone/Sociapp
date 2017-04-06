@@ -164,7 +164,13 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         
         let post = posts[indexPath.row]
         
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell") as? PostCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as? PostCell {
+            
+            if let img = FeedVC.imageCache.object(forKey: post.imageUrl as NSString) {
+                cell.configureCell(post: post, img: img)
+            } else {
+                cell.configureCell(post: post)
+            }
             
             cell.deleteEditPostButton.tag = indexPath.row
             cell.deleteEditPostButton.addTarget(self, action: #selector(FeedVC.goToEditPostVC), for: .touchUpInside)
@@ -177,11 +183,6 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
             cell.commentsTextView.addGestureRecognizer(tap)
             cell.commentsTextView.isUserInteractionEnabled = true
             
-            if let img = FeedVC.imageCache.object(forKey: post.imageUrl as NSString) {
-                cell.configureCell(post: post, img: img)
-            } else {
-                cell.configureCell(post: post)
-            }
             return cell
         } else {
             return PostCell()
@@ -199,11 +200,10 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
             cell?.commentsExpanded = !(cell?.commentsExpanded)!
             
             cell?.commentsTextView.attributedText = (cell?.commentsExpanded)! ? cell?.allComments : cell?.showComments
+            //print(cell?.commentsTextView.attributedText ?? "NO")
             
             tableView.beginUpdates()
             tableView.endUpdates()
-            
-            
         }
     }
     

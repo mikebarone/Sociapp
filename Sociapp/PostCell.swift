@@ -31,8 +31,8 @@ class PostCell: UITableViewCell {
     var displayNameRef: FIRDatabaseReference!
     var profileImageUrlRef: FIRDatabaseReference!
     
-    var showComments: NSMutableAttributedString = NSMutableAttributedString(string:"Show Comments...")
-    var allComments: NSMutableAttributedString = NSMutableAttributedString(string:"No comments yet")
+    var showComments: NSMutableAttributedString!
+    var allComments: NSMutableAttributedString!
     var commentsExpanded: Bool = false
     
     override func awakeFromNib() {
@@ -57,12 +57,17 @@ class PostCell: UITableViewCell {
         self.postCaption.text = post.caption
         self.likeNumber.text = "\(post.likes)"
         
+        var allCommentsString: String = "No Comments Yet"
+        if !post.comments.isEmpty{
+            allCommentsString = ""
+        }
+        
         let boldAttributes = [ NSFontAttributeName: UIFont(name: "Avenir Next", size: 15.0)!, NSForegroundColorAttributeName: UIColor.black ]
         let normalAttributes = [ NSFontAttributeName: UIFont(name: "Avenir Next", size: 15.0)!, NSForegroundColorAttributeName: UIColor.gray ]
         
-        if post.comments.count > 0 {
-            allComments = NSMutableAttributedString(string:"", attributes:normalAttributes)
-        }
+        showComments = NSMutableAttributedString(string:"Show Comments...", attributes:normalAttributes)
+        allComments = NSMutableAttributedString(string: allCommentsString, attributes:normalAttributes)
+
         
         for comment in post.comments {
             
@@ -77,11 +82,14 @@ class PostCell: UITableViewCell {
                     boldString.append(attributedString)
                     
                     self.allComments.append(boldString)
+
                 }
             })
             
         }
-        print(allComments)
+        
+        commentsExpanded = false
+        commentsTextView.attributedText = showComments
         
         if let userUID = KeychainWrapper.standard.string(forKey: KEY_UID) {
             if userUID != post.userId {
